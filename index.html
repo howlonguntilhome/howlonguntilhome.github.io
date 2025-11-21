@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Schedule Timer</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        #timer {
+            font-size: 5rem;
+            font-weight: bold;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+        .label {
+            font-size: 1.2rem;
+            font-weight: normal;
+            color: #a0a0a0;
+            display: block;
+            margin-bottom: 10px;
+        }
+        #pip-btn {
+            margin-top: 20px;
+            padding: 8px 16px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        #pip-btn:hover {
+            background-color: #444;
+        }
+        /* Hidden media elements */
+        .hidden-media {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="timer">
+        <span id="target-label" class="label">Checking schedule...</span>
+        <span id="time-display">--:--</span>
+    </div>
+
+    <button id="pip-btn">Pop Out Mini Timer</button>
+
+    <canvas id="pip-canvas" width="300" height="120" class="hidden-media"></canvas>
+    <video id="pip-video" class="hidden-media" autoplay muted></video>
+
+    <script>
+        const displayElement = document.getElementById("time-display");
+        const labelElement = document.getElementById("target-label");
+        const canvas = document.getElementById("pip-canvas");
+        const ctx = canvas.getContext("2d");
+        const video = document.getElementById("pip-video");
+        const pipBtn = document.getElementById("pip-btn");
+
+        // Connect canvas to video stream
+        const stream = canvas.captureStream(1);
+        video.srcObject = stream;
+
+        function getTargetTime() {
+            const now = new Date();
+            const day = now.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+            
+            // Helper to set time today
+            const setTime = (h, m) => {
+                const d = new Date(now);
+                d.setHours(h, m, 0, 0);
+                return d;
+            };
+
+            // 1. Handle Weekends (Sat/Sun) -> Jump to Monday 8:45
+            if (day === 6 || day === 0) {
+                const target = new Date(now);
+                target.setDate(now.getDate() + (day === 6 ? 2 : 1)); // Add 2 days if Sat, 1 if Sun
+                target.setHours(8, 45, 0, 0);
+                return { time: target, label: "Until Monday 8:45 AM" };
+            }
+
+            // 2. Handle Weekdays
+            const startSchool = setTime(8, 45);
+            
+            // Determine End Time (Tue = 14:45, Others = 15:20)
+            const endHour = (day === 2) ? 14 : 15;
+            const endMinute = (day === 2) ? 45 : 20;
+            const endSchool = setTime(endHour, endMinute);
+
+            // Logic Check
+            if (now < startSchool) {
+                // Before school starts
+                return { time: startSchool, label: "Until 8:45 AM" };
+            } else if (now < endSchool) {
+                // During school
+                return { 
+                    time: endSchool, 
+                    label: `Until ${endHour > 12 ? endHour - 12 : endHour}:${endMinute} PM` 
+                };
+            } else {
+                // After school finished
+                const target = new Date(now);
+                target.setDate(now.getDate() + 1); // Tomorrow
+                target.setHours(8, 45, 0, 0);
+                
+                // If today is Friday (5), tomorrow is Sat, so skip to Monday
+                if (day === 5) {
+                    target.setDate(now.getDate() + 3);
+                    return { time: target, label: "Until Monday 8:45 AM" };
+                }
+
+                return { time: target, label: "Until Tomorrow 8:45 AM" };
+            }
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const targetObj = getTargetTime();
+            const target = targetObj.time;
+            
+            labelElement.innerText = targetObj.label;
+
+            const diff = target - now;
+            let displayString = "0m 00s";
+
+            if (diff > 0) {
+                // Calculate hours total just in case (e.g. weekends)
+                const totalMinutes = Math.floor(diff / (1000 * 60));
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                // Logic to show hours only if it's a long wait (like weekends)
+                if (hours > 0) {
+                     displayString = `${hours}h ${minutes}m`;
+                } else {
+                     displayString = `${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
+                }
+            }
+
+            displayElement.innerText = displayString;
+            drawToCanvas(displayString);
+        }
+
+        function drawToCanvas(text) {
+            ctx.fillStyle = "#121212";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#e0e0e0";
+            // Adjusted font size for smaller canvas
+            ctx.font = "bold 60px sans-serif"; 
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+        }
+
+        pipBtn.addEventListener('click', async () => {
+            try {
+                if (document.pictureInPictureElement) {
+                    await document.exitPictureInPicture();
+                } else {
+                    await video.play();
+                    await video.requestPictureInPicture();
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+
+</body>
+</html>
