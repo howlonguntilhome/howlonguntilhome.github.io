@@ -108,6 +108,22 @@
             margin-bottom: 10px;
         }
 
+        #unmute-btn {
+            padding: 10px 20px;
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+            margin-top: 15px;
+        }
+
+        #unmute-btn:hover {
+            background-color: #333;
+        }
+
         .hidden-media {
             position: absolute;
             top: -9999px;
@@ -127,6 +143,7 @@
                 <span id="target-label" class="label">Checking schedule...</span>
                 <span id="time-display">--:--</span>
             </div>
+            <button id="unmute-btn">Pop out timer</button>
         </div>
         
         <div class="timer-videos-bottom" id="timer-videos-bottom"></div>
@@ -147,11 +164,13 @@
         const rightVideos = document.getElementById("right-videos");
         const timerVideosTop = document.getElementById("timer-videos-top");
         const timerVideosBottom = document.getElementById("timer-videos-bottom");
+        const unmuteBtn = document.getElementById("unmute-btn");
 
         const stream = canvas.captureStream(1);
         video.srcObject = stream;
 
         const baseUrl = "https://github.com/howlonguntilhome/glowing-waffle/releases/download/videos/video-";
+        const allVideos = [];
 
         function createVideoElement(index, startRandom = true) {
             const videoNum = String(index).padStart(5, '0');
@@ -174,6 +193,8 @@
             }
             
             videoEl.play().catch(err => console.log('Autoplay prevented:', err));
+            
+            allVideos.push(videoEl);
             
             return videoEl;
         }
@@ -229,6 +250,20 @@
             container.appendChild(videoEl);
             timerVideosBottom.appendChild(container);
         }
+
+        // Unmute all videos button
+        unmuteBtn.addEventListener('click', async () => {
+            for (const vid of allVideos) {
+                try {
+                    vid.muted = false;
+                    await vid.play();
+                } catch (err) {
+                    console.error('Failed to pop out timer:', err);
+                }
+            }
+            unmuteBtn.textContent = 'Click to pop out timer';
+            unmuteBtn.disabled = true;
+        });
 
         function getTargetTime() {
             const now = new Date();
