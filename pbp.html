@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        #timer {
+            font-size: 5rem;
+            font-weight: bold;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+        .label {
+            font-size: 1.2rem;
+            font-weight: normal;
+            color: #a0a0a0;
+            display: block;
+            margin-bottom: 10px;
+        }
+        #pip-btn {
+            margin-top: 20px;
+            padding: 8px 16px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        #pip-btn:hover {
+            background-color: #444;
+        }
+        .hidden-media {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="timer">
+        <span id="target-label" class="label">Checking schedule...</span>
+        <span id="time-display">--:--</span>
+    </div>
+
+    <button id="pip-btn">Pop Out Mini Timer</button>
+
+    <canvas id="pip-canvas" width="300" height="120" class="hidden-media"></canvas>
+    <video id="pip-video" class="hidden-media" autoplay muted></video>
+
+    <script>
+        const displayElement = document.getElementById("time-display");
+        const labelElement = document.getElementById("target-label");
+        const canvas = document.getElementById("pip-canvas");
+        const ctx = canvas.getContext("2d");
+        const video = document.getElementById("pip-video");
+        const pipBtn = document.getElementById("pip-btn");
+
+        const stream = canvas.captureStream(1);
+        video.srcObject = stream;
+
+        function getTargetTime() {
+            const now = new Date();
+            const day = now.getDay();
+            
+            const setTime = (h, m) => {
+                const d = new Date(now);
+                d.setHours(h, m, 0, 0);
+                return d;
+            };
+
+            // Weekend Logic
+            if (day === 6 || day === 0) {
+                const target = new Date(now);
+                target.setDate(now.getDate() + (day === 6 ? 2 : 1));
+                target.setHours(9, 10, 0, 0);
+                return { time: target, label: "Until Monday 9:10 AM" };
+            }
+
+            // Define period times based on day
+            let periods;
+            if (day === 2) { // Tuesday
+                periods = [
+                    { h: 9, m: 40, label: "Until 9:40 AM" },
+                    { h: 10, m: 40, label: "Until 10:40 AM" },
+                    { h: 12, m: 0, label: "Until 12:00 PM" },
+                    { h: 13, m: 0, label: "Until 1:00 PM" },
+                    { h: 14, m: 45, label: "Until 2:45 PM" }
+                ];
+            } else if (day >= 1 && day <= 5) { // Mon, Wed, Thu, Fri
+                periods = [
+                    { h: 9, m: 10, label: "Until 9:10 AM" },
+                    { h: 10, m: 10, label: "Until 10:10 AM" },
+                    { h: 11, m: 10, label: "Until 11:10 AM" },
+                    { h: 11, m: 30, label: "Until 11:30 AM" },
+                    { h: 12, m: 30, label: "Until 12:30 PM" },
+                    { h: 13, m: 30, label: "Until 1:30 PM" },
+                    { h: 14, m: 15, label: "Until 2:15 PM" },
+                    { h: 15, m: 20, label: "Until 3:20 PM" }
+                ];
+            }
+
+            // Find next period
+            for (let period of periods) {
+                const periodTime = setTime(period.h, period.m);
+                if (now < periodTime) {
+                    return { time: periodTime, label: period.label };
+                }
+            }
+
+            // All periods done for today - set to first period tomorrow
+            const target = new Date(now);
+            if (day === 5) { // Friday -> Monday
+                target.setDate(now.getDate() + 3);
+                target.setHours(9, 10, 0, 0);
+                return { time: target, label: "Until Monday 9:10 AM" };
+            } else if (day === 1) { // Monday -> Tuesday
+                target.setDate(now.getDate() + 1);
+                target.setHours(9, 40, 0, 0);
+                return { time: target, label: "Until Tuesday 9:40 AM" };
+            } else { // Other days
+                target.setDate(now.getDate() + 1);
+                target.setHours(9, 10, 0, 0);
+                const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][target.getDay()];
+                return { time: target, label: `Until ${dayName} 9:10 AM` };
+            }
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const targetObj = getTargetTime();
+            const target = targetObj.time;
+            
+            labelElement.innerText = targetObj.label;
+
+            const diff = target - now;
+            let displayString = "0m 00s";
+
+            if (diff > 0) {
+                const totalMinutes = Math.floor(diff / (1000 * 60));
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                if (hours > 0) {
+                     displayString = `${hours}h ${minutes}m`;
+                } else {
+                     displayString = `${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
+                }
+            }
+
+            // Update page text
+            displayElement.innerText = displayString;
+            
+            // Update Tab Title
+            document.title = displayString;
+
+            drawToCanvas(displayString);
+        }
+
+        function drawToCanvas(text) {
+            ctx.fillStyle = "#121212";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#e0e0e0";
+            ctx.font = "bold 60px sans-serif"; 
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+        }
+
+        pipBtn.addEventListener('click', async () => {
+            try {
+                if (document.pictureInPictureElement) {
+                    await document.exitPictureInPicture();
+                } else {
+                    await video.play();
+                    await video.requestPictureInPicture();
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+
+</body>
+</html>
