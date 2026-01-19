@@ -130,15 +130,11 @@
 
             if (diff > 0) {
                 const totalMinutes = Math.floor(diff / (1000 * 60));
-                const hours = Math.floor(totalMinutes / 60);
+               const hours = Math.floor(totalMinutes / 60);
                 const minutes = totalMinutes % 60;
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-                if (hours > 0) {
-                     displayString = `${hours}h ${minutes}m`;
-                } else {
-                     displayString = `${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
-                }
+                displayString = `${hours}h ${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
             }
 
             // Update page text
@@ -180,3 +176,4 @@
 
 </body>
 </html>
+
