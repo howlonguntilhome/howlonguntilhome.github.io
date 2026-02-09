@@ -4,4 +4,6 @@
 
 ## Not actually designed to be maintained or used by normal people except me :)
 
-### [howlonguntilhome.github.io](https://howlonguntilhome.github.io)
+## yes i spent £7 on a domain, expires feb 9th 2027 
+
+### [howlonguntilhome.site](https://howlonguntilhome.site)
