@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCR J277 GCSE Computer Science Knowledge Organiser</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090f;
+  --bg2: #0e1018;
+  --bg3: #141620;
+  --bg4: #1a1d2e;
+  --border: #2d2040;
+  --text: #e8eaf6;
+  --muted: #9b8fc0;
+  --c1: #a78bfa;
+  --c2: #7c6bff;
+  --c3: #ff6b6b;
+  --c4: #06d6a0;
+  --c5: #ffd166;
+  --c6: #ff9f43;
+  --red: #ff4757;
+  --amber: #ffa502;
+  --green: #2ed573;
+  --card-r: 12px;
+  --trinity-purple: #4B1787;
+  --trinity-light: #7B5EA7;
+  --trinity-gold: #F0A500;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ── NAV ── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,9,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 1rem}
+#nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;padding:.4rem 0}
+.nav-logo{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--c1);white-space:nowrap;margin-right:.5rem}
+.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:.3rem .8rem;border-radius:20px;font-size:.75rem;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:'DM Sans',sans-serif}
+.nav-btn:hover,.nav-btn.active{border-color:var(--c1);color:var(--c1);background:rgba(0,212,255,.08)}
+#progress-bar{position:fixed;top:90px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+#progress-fill{height:100%;background:linear-gradient(90deg,var(--c1),var(--c2));transition:width .4s ease;width:0%}
+
+/* ── MAIN ── */
+#main{max-width:1200px;margin:0 auto;padding:110px 1rem 3rem}
+
+/* ── HERO ── */
+#hero{text-align:center;padding:3rem 0 2rem;position:relative}
+#hero h1{font-family:'Space Mono',monospace;font-size:clamp(1.8rem,5vw,3rem);color:var(--c1);letter-spacing:-1px;line-height:1.1}
+#hero h1 span{color:var(--text)}
+#hero p{color:var(--muted);margin-top:.8rem;font-size:.95rem;max-width:500px;margin-inline:auto}
+.hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1.2rem}
+.hero-tag{padding:.25rem .75rem;border-radius:20px;font-size:.72rem;font-weight:600;letter-spacing:.5px}
+
+/* ── SECTION HEADER ── */
+.section-wrap{margin-top:2.5rem;display:none}
+.section-wrap.active{display:block}
+.section-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+.section-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.section-title{font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:700}
+.section-sub{font-size:.8rem;color:var(--muted);margin-top:.2rem}
+.section-progress{margin-left:auto;font-size:.75rem;color:var(--muted);text-align:right}
+
+/* ── TOPIC CARDS ── */
+.topic-grid{display:grid;gap:1rem;grid-template-columns:1fr}
+@media(min-width:640px){.topic-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.topic-grid{grid-template-columns:repeat(3,1fr)}}
+
+.topic-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--card-r);overflow:hidden;transition:transform .2s,border-color .2s}
+.topic-card:hover{transform:translateY(-2px)}
+.topic-card-header{padding:.8rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.topic-card-title{font-weight:600;font-size:.88rem}
+.topic-card-ref{font-size:.7rem;color:var(--muted);font-family:'Space Mono',monospace}
+.topic-card-body{padding:0 1rem;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s}
+.topic-card.open .topic-card-body{max-height:2000px;padding:.2rem 1rem 1rem}
+.toggle-icon{color:var(--muted);font-size:1rem;transition:transform .3s;flex-shrink:0}
+.topic-card.open .toggle-icon{transform:rotate(180deg)}
+
+/* RAG */
+.rag-row{display:flex;gap:.4rem;margin-top:.8rem;align-items:center}
+.rag-label{font-size:.72rem;color:var(--muted);margin-right:.2rem}
+.rag-btn{padding:.22rem .6rem;border-radius:4px;border:1px solid;font-size:.7rem;font-weight:700;cursor:pointer;transition:all .15s;background:none;font-family:'DM Sans',sans-serif}
+.rag-r{border-color:var(--red);color:var(--red)}
+.rag-r.active,.rag-r:hover{background:var(--red);color:#fff}
+.rag-a{border-color:var(--amber);color:var(--amber)}
+.rag-a.active,.rag-a:hover{background:var(--amber);color:#000}
+.rag-g{border-color:var(--green);color:var(--green)}
+.rag-g.active,.rag-g:hover{background:var(--green);color:#000}
+
+/* KEY TERMS */
+.terms-list{display:flex;flex-direction:column;gap:.5rem;margin-top:.8rem}
+.term-item{background:var(--bg4);border-radius:8px;overflow:hidden}
+.term-q{padding:.55rem .8rem;font-size:.82rem;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.term-reveal{font-size:.75rem;color:var(--muted)}
+.term-a{padding:.5rem .8rem .6rem;font-size:.8rem;color:var(--muted);border-top:1px solid var(--border);display:none;line-height:1.5}
+.term-item.revealed .term-a{display:block}
+.term-item.revealed .term-reveal{color:var(--c4)}
+
+/* MUST KNOW */
+.must-know{margin-top:.8rem;display:flex;flex-direction:column;gap:.3rem}
+.must-item{display:flex;gap:.6rem;align-items:flex-start;font-size:.8rem;line-height:1.5;padding:.3rem 0;border-bottom:1px solid var(--border)}
+.must-item:last-child{border-bottom:none}
+.must-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:.45rem}
+.watch-out{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.2);border-radius:8px;padding:.6rem .8rem;margin-top:.8rem;font-size:.78rem;color:#ff8080;line-height:1.5}
+.watch-out strong{color:var(--red)}
+
+/* MINI QUIZ */
+.mini-quiz{margin-top:1rem;background:var(--bg4);border-radius:10px;padding:.8rem;border:1px solid var(--border)}
+.mini-quiz-title{font-size:.75rem;font-weight:700;color:var(--c2);margin-bottom:.6rem;font-family:'Space Mono',monospace;letter-spacing:.5px}
+.quiz-q{font-size:.8rem;margin-bottom:.5rem;line-height:1.4}
+.quiz-options{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.4rem}
+.quiz-opt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;font-size:.78rem;cursor:pointer;text-align:left;color:var(--text);transition:all .15s;font-family:'DM Sans',sans-serif}
+.quiz-opt:hover{border-color:var(--c2)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(46,213,115,.12);color:var(--green)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(255,71,87,.12);color:var(--red)}
+.quiz-feedback{font-size:.76rem;padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;display:none;line-height:1.4}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:rgba(46,213,115,.1);color:var(--green)}
+.quiz-feedback.no{background:rgba(255,71,87,.1);color:#ff8080}
+.quiz-nav{display:flex;gap:.5rem;margin-top:.6rem;align-items:center}
+.quiz-nav-btn{background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:.3rem .7rem;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.quiz-nav-btn:hover{border-color:var(--c1);color:var(--c1)}
+.quiz-count{font-size:.72rem;color:var(--muted);margin-left:auto;font-family:'Space Mono',monospace}
+
+/* OVERVIEW dashboard */
+#overview{margin-top:2rem}
+.ov-grid{display:grid;gap:.8rem;grid-template-columns:repeat(2,1fr)}
+@media(min-width:640px){.ov-grid{grid-template-columns:repeat(4,1fr)}}
+.ov-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.8rem;text-align:center;cursor:pointer;transition:all .2s}
+.ov-card:hover{border-color:var(--c1);transform:translateY(-2px)}
+.ov-icon{font-size:1.5rem;margin-bottom:.4rem}
+.ov-title{font-size:.75rem;font-weight:600;line-height:1.3}
+.ov-bar{height:4px;border-radius:2px;background:var(--border);margin-top:.5rem;overflow:hidden}
+.ov-bar-fill{height:100%;border-radius:2px;background:var(--green);transition:width .5s}
+.ov-pct{font-size:.65rem;color:var(--muted);margin-top:.3rem;font-family:'Space Mono',monospace}
+
+/* FLASHCARD MODE */
+#flashcard-wrap{display:none;margin-top:1.5rem}
+#flashcard-wrap.active{display:block}
+.fc-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:2.5rem;text-align:center;min-height:200px;display:flex;flex-direction:column;justify-content:center;align-items:center;cursor:pointer;position:relative;overflow:hidden;transition:all .3s}
+.fc-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,.03),rgba(124,107,255,.03));pointer-events:none}
+.fc-topic{font-size:.7rem;font-family:'Space Mono',monospace;color:var(--muted);margin-bottom:.8rem;letter-spacing:.5px}
+.fc-question{font-size:1.05rem;font-weight:600;line-height:1.4;max-width:500px}
+.fc-answer{font-size:.9rem;color:var(--c4);line-height:1.6;max-width:500px;display:none}
+.fc-hint{font-size:.72rem;color:var(--muted);margin-top:1rem}
+.fc-card.flipped .fc-question{display:none}
+.fc-card.flipped .fc-answer{display:block}
+.fc-card.flipped .fc-hint{display:none}
+.fc-controls{display:flex;gap:.8rem;justify-content:center;margin-top:1rem;align-items:center}
+.fc-btn{padding:.5rem 1.2rem;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.fc-btn:hover{border-color:var(--c1);color:var(--c1)}
+.fc-btn.know{border-color:var(--green);color:var(--green)}
+.fc-btn.know:hover{background:var(--green);color:#000}
+.fc-btn.unsure{border-color:var(--red);color:var(--red)}
+.fc-btn.unsure:hover{background:var(--red);color:#fff}
+.fc-progress{font-size:.75rem;color:var(--muted);font-family:'Space Mono',monospace}
+.fc-filter{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+.fc-filter-btn{padding:.25rem .7rem;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);font-size:.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.fc-filter-btn.on{border-color:var(--c2);color:var(--c2);background:rgba(124,107,255,.1)}
+
+/* GLOBAL QUIZ */
+#gquiz-wrap{display:none;margin-top:1.5rem}
+#gquiz-wrap.active{display:block}
+.gq-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.gq-score{font-family:'Space Mono',monospace;font-size:.85rem;color:var(--c1)}
+.gq-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem;max-width:700px;margin:0 auto}
+.gq-topic{font-size:.7rem;font-family:'Space Mono',monospace;color:var(--muted);margin-bottom:.5rem;letter-spacing:.5px}
+.gq-q{font-size:1rem;font-weight:600;line-height:1.5;margin-bottom:1rem}
+.gq-opts{display:flex;flex-direction:column;gap:.5rem}
+.gq-opt{background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;font-size:.85rem;cursor:pointer;text-align:left;color:var(--text);transition:all .15s;font-family:'DM Sans',sans-serif}
+.gq-opt:hover:not(:disabled){border-color:var(--c2);background:rgba(124,107,255,.08)}
+.gq-opt.correct{border-color:var(--green)!important;background:rgba(46,213,115,.12)!important;color:var(--green)!important}
+.gq-opt.wrong{border-color:var(--red)!important;background:rgba(255,71,87,.12)!important;color:var(--red)!important}
+.gq-feedback{margin-top:1rem;padding:.7rem 1rem;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}
+.gq-feedback.show{display:block}
+.gq-feedback.ok{background:rgba(46,213,115,.1);color:var(--green)}
+.gq-feedback.no{background:rgba(255,71,87,.1);color:#ff8080}
+.gq-next{margin-top:1rem;padding:.55rem 1.5rem;border-radius:8px;border:1px solid var(--c1);background:none;color:var(--c1);font-size:.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;display:none;transition:all .2s}
+.gq-next.show{display:inline-block}
+.gq-next:hover{background:var(--c1);color:#000}
+.gq-results{text-align:center;padding:2rem;display:none}
+.gq-results.show{display:block}
+.gq-results h2{font-family:'Space Mono',monospace;font-size:1.5rem;color:var(--c1);margin-bottom:.5rem}
+.gq-results p{color:var(--muted);margin-bottom:1rem}
+.gq-restart{padding:.6rem 1.5rem;border-radius:8px;border:1px solid var(--c2);background:none;color:var(--c2);font-size:.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.gq-restart:hover{background:var(--c2);color:#fff}
+
+/* Mode selector */
+.mode-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.mode-btn{padding:.4rem 1rem;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);font-size:.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;display:flex;align-items:center;gap:.4rem}
+.mode-btn.active,.mode-btn:hover{border-color:var(--c1);color:var(--c1);background:rgba(0,212,255,.06)}
+
+/* Utility */
+.chip{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.65rem;font-weight:700;font-family:'Space Mono',monospace}
+</style>
+</head>
+<body>
+
+<div id="nav">
+  <div id="nav-inner">
+    <div class="nav-logo" style="color:#a78bfa">OCR J277</div>
+    <button class="nav-btn active" onclick="showSection('home')">🏠 Home</button>
+    <button class="nav-btn" onclick="showSection('arch')">1.1 CPU</button>
+    <button class="nav-btn" onclick="showSection('memory')">1.2 Memory</button>
+    <button class="nav-btn" onclick="showSection('networks')">1.3 Networks</button>
+    <button class="nav-btn" onclick="showSection('security')">1.4 Security</button>
+    <button class="nav-btn" onclick="showSection('software')">1.5 Software</button>
+    <button class="nav-btn" onclick="showSection('ethical')">1.6 Ethical</button>
+    <button class="nav-btn" onclick="showSection('algorithms')">2.1 Algorithms</button>
+    <button class="nav-btn" onclick="showSection('programming')">2.2 Programming</button>
+    <button class="nav-btn" onclick="showSection('robust')">2.3 Robust</button>
+    <button class="nav-btn" onclick="showSection('boolean')">2.4 Boolean</button>
+    <button class="nav-btn" onclick="showSection('languages')">2.5 Languages</button>
+    <button class="nav-btn" onclick="showSection('flashcards')">⚡ Flashcards</button>
+    <button class="nav-btn" onclick="showSection('quiz')">🎯 Quiz</button>
+  </div>
+</div>
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<div id="main">
+
+<!-- HOME -->
+<div id="sec-home" class="section-wrap active">
+  <div id="hero">
+
+    <div style="margin-bottom:1.5rem;padding:1rem 1.5rem;background:rgba(75,23,135,.12);border:1px solid rgba(75,23,135,.35);border-radius:14px;text-align:center">
+      <div style="font-size:.85rem;color:#9b8fc0">OCR GCSE Computer Science &nbsp;·&nbsp; Component J277</div>
+    </div>
+    <h1>OCR J277<br><span>Knowledge Organiser</span></h1>
+    <p>Your complete revision companion. Learn it. Test it. Know it.</p>
+    <div class="hero-tags">
+      <span class="hero-tag" style="background:rgba(167,139,250,.12);color:var(--c1);border:1px solid rgba(167,139,250,.3)">Paper 1</span>
+      <span class="hero-tag" style="background:rgba(124,107,255,.12);color:var(--c2);border:1px solid rgba(124,107,255,.3)">Paper 2</span>
+      <span class="hero-tag" style="background:rgba(6,214,160,.12);color:var(--c4);border:1px solid rgba(6,214,160,.3)">Flashcards</span>
+      <span class="hero-tag" style="background:rgba(255,209,102,.12);color:var(--c5);border:1px solid rgba(255,209,102,.3)">Self-Test Quizzes</span>
+      <span class="hero-tag" style="background:rgba(255,107,107,.12);color:var(--c3);border:1px solid rgba(255,107,107,.3)">RAG Tracker</span>
+    </div>
+  </div>
+
+  <div id="overview">
+    <div style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted);margin-bottom:.8rem;letter-spacing:.5px">YOUR PROGRESS</div>
+    <div class="ov-grid" id="ov-grid"></div>
+  </div>
+
+  <div style="margin-top:2rem;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.2rem">
+    <div style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--c2);margin-bottom:.8rem;letter-spacing:.5px">HOW TO USE THIS</div>
+    <div style="display:grid;gap:.5rem">
+      <div style="font-size:.82rem;display:flex;gap:.8rem;align-items:flex-start"><span style="color:var(--c1);font-weight:700;flex-shrink:0">1.</span><span>Pick a topic from the nav bar above. Read the key terms and must-know facts.</span></div>
+      <div style="font-size:.82rem;display:flex;gap:.8rem;align-items:flex-start"><span style="color:var(--c1);font-weight:700;flex-shrink:0">2.</span><span>Click on each key term to reveal its definition. Try to say it in your head first.</span></div>
+      <div style="font-size:.82rem;display:flex;gap:.8rem;align-items:flex-start"><span style="color:var(--c1);font-weight:700;flex-shrink:0">3.</span><span>Rate yourself <span style="color:var(--red);font-weight:700">RED</span> / <span style="color:var(--amber);font-weight:700">AMBER</span> / <span style="color:var(--green);font-weight:700">GREEN</span> for each topic. Be honest — it's just for you.</span></div>
+      <div style="font-size:.82rem;display:flex;gap:.8rem;align-items:flex-start"><span style="color:var(--c1);font-weight:700;flex-shrink:0">4.</span><span>Use <b>Flashcards</b> mode for quick-fire recall. Use <b>Quiz</b> mode to test exam-style questions.</span></div>
+      <div style="font-size:.82rem;display:flex;gap:.8rem;align-items:flex-start"><span style="color:var(--c1);font-weight:700;flex-shrink:0">5.</span><span>Focus your revision time on your RED topics first. Always.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOPIC SECTIONS will be injected here by JS -->
+<div id="sec-arch" class="section-wrap"></div>
+<div id="sec-memory" class="section-wrap"></div>
+<div id="sec-networks" class="section-wrap"></div>
+<div id="sec-security" class="section-wrap"></div>
+<div id="sec-software" class="section-wrap"></div>
+<div id="sec-ethical" class="section-wrap"></div>
+<div id="sec-algorithms" class="section-wrap"></div>
+<div id="sec-programming" class="section-wrap"></div>
+<div id="sec-robust" class="section-wrap"></div>
+<div id="sec-boolean" class="section-wrap"></div>
+<div id="sec-languages" class="section-wrap"></div>
+
+<!-- FLASHCARD MODE -->
+<div id="sec-flashcards" class="section-wrap">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(0,212,255,.12);color:var(--c1)">⚡</div>
+    <div><div class="section-title" style="color:var(--c1)">Flashcard Mode</div><div class="section-sub">Tap a card to reveal the answer. Mark yourself honestly.</div></div>
+  </div>
+  <div class="fc-filter" id="fc-filter"></div>
+  <div id="fc-stats" style="font-size:.75rem;color:var(--muted);margin-bottom:.8rem;font-family:'Space Mono',monospace"></div>
+  <div class="fc-card" id="fc-card" onclick="flipCard()">
+    <div class="fc-topic" id="fc-topic"></div>
+    <div class="fc-question" id="fc-q"></div>
+    <div class="fc-answer" id="fc-a"></div>
+    <div class="fc-hint">👆 tap to reveal answer</div>
+  </div>
+  <div class="fc-controls">
+    <button class="fc-btn unsure" onclick="markCard(false)">✗ Still learning</button>
+    <div class="fc-progress" id="fc-progress"></div>
+    <button class="fc-btn know" onclick="markCard(true)">✓ Got it</button>
+  </div>
+  <div style="text-align:center;margin-top:.8rem">
+    <button class="fc-btn" onclick="prevCard()">← Prev</button>
+    <button class="fc-btn" style="margin:0 .4rem" onclick="shuffleCards()">↻ Shuffle</button>
+    <button class="fc-btn" onclick="nextCard()">Next →</button>
+  </div>
+</div>
+
+<!-- GLOBAL QUIZ -->
+<div id="sec-quiz" class="section-wrap">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(124,107,255,.12);color:var(--c2)">🎯</div>
+    <div><div class="section-title" style="color:var(--c2)">Mixed Quiz</div><div class="section-sub">15 questions from across the whole specification.</div></div>
+  </div>
+
+  <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:1rem">
+    <div style="font-size:1.5rem">📴</div>
+    <div>
+      <div style="font-size:.85rem;font-weight:600;color:var(--c4)">Offline Quiz Mode</div>
+      <div style="font-size:.78rem;color:var(--muted);line-height:1.5">Randomly shuffled questions from the built-in bank every time. Works anywhere, no internet needed.</div>
+    </div>
+    <button onclick="initOfflineQuiz()" style="margin-left:auto;padding:.5rem 1.2rem;border-radius:8px;border:1px solid var(--c4);background:none;color:var(--c4);font-size:.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">Start Quiz →</button>
+  </div>
+
+  <div id="offline-quiz-area" style="display:block">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+      <div class="gq-score" id="gq-score-off">Score: 0 / 0</div>
+      <div style="display:flex;gap:.5rem">
+        <button class="quiz-nav-btn" onclick="initOfflineQuiz()">↻ New Quiz</button>
+
+      </div>
+    </div>
+    <div class="gq-card" id="gq-card-off">
+      <div class="gq-topic" id="gq-topic-off"></div>
+      <div class="gq-q" id="gq-q-off"></div>
+      <div class="gq-opts" id="gq-opts-off"></div>
+      <div class="gq-feedback" id="gq-feedback-off"></div>
+      <button class="gq-next" id="gq-next-off" onclick="nextOfflineQ()">Next question →</button>
+    </div>
+    <div class="gq-results" id="gq-results-off">
+      <h2 id="gq-final-score-off"></h2>
+      <p id="gq-final-msg-off"></p>
+      <button class="gq-restart" onclick="initOfflineQuiz()">Try again</button>
+      <button class="gq-restart" style="margin-left:.5rem;border-color:var(--c2);color:var(--c2)" onclick="backToModePicker()">← Back</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+<div style="background:#050305;border-top:1px solid rgba(75,23,135,.3);padding:.8rem 1rem;text-align:center;margin-top:2rem">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
+    <span style="font-size:.72rem;color:#7B5EA7;font-family:'Space Mono',monospace">© 2026 F Osugo. All rights reserved. This resource may not be copied, shared, or distributed without the express written permission of the author. &nbsp;·&nbsp; OCR J277 GCSE Computer Science</span>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const SECTIONS = [
+  {
+    id: 'arch', title: '1.1 Systems Architecture', icon: '🔧',
+    color: 'var(--c1)', bg: 'rgba(0,212,255,.12)',
+    sub: 'CPU, Von Neumann, Fetch-Execute, Registers, Performance',
+    topics: [
+      {
+        title: 'The CPU & Von Neumann Model', ref: '1.1.1',
+        terms: [
+          {q:'Von Neumann architecture', a:'A computer design where data AND instructions are stored together in memory as binary. The CPU fetches and executes instructions sequentially.'},
+          {q:'Stored program concept', a:'The idea that a program (instructions) is stored in memory in binary, just like data. The CPU cannot tell the difference until it fetches and decodes the instruction.'},
+          {q:'ALU (Arithmetic Logic Unit)', a:'The part of the CPU that performs all calculations (arithmetic: +, −) and logical operations (AND, OR, NOT, comparisons).'},
+          {q:'CU (Control Unit)', a:'Directs the operation of the CPU — fetches instructions, decodes them, and sends control signals to other components to carry them out.'},
+          {q:'System clock', a:'Generates a regular electrical pulse that synchronises all CPU operations. Measured in GHz (gigahertz = billions of cycles per second).'},
+          {q:'IAS (Immediate Access Store)', a:'Another name for main memory (RAM) — stores both the program being run and the data it is using.'},
+        ],
+        must: [
+          'The Von Neumann model stores both programs and data in the same memory as binary',
+          'The ALU performs calculations; the CU controls what happens',
+          'The system clock synchronises operations — faster clock = more instructions per second',
+          'Buses connect the CPU to memory: Address Bus (where), Data Bus (what), Control Bus (read/write signals)',
+        ],
+        watch: '⚠️ Students often confuse ALU and CU. ALU = does the maths. CU = gives the orders. They do NOT swap roles.',
+        quiz: [
+          {q:'Where are both instructions and data stored in the Von Neumann model?',opts:['CPU registers','Main memory (IAS)','Secondary storage','The ALU'],ans:1,exp:'In Von Neumann architecture, both programs and data are stored together in main memory (IAS) as binary.'},
+          {q:'What does the ALU do?',opts:['Fetches instructions from memory','Performs arithmetic and logical operations','Stores the current instruction','Controls the flow of data'],ans:1,exp:'The ALU (Arithmetic Logic Unit) performs all calculations and logical comparisons.'},
+          {q:'What does the system clock do?',opts:['Stores the time and date','Generates pulses to synchronise CPU operations','Controls which program runs','Manages cache memory'],ans:1,exp:'The system clock generates regular pulses that keep all CPU components in sync. Faster clock = more operations per second.'},
+        ]
+      },
+      {
+        title: 'Registers & Fetch-Execute Cycle', ref: '1.1.2',
+        terms: [
+          {q:'Program Counter (PC)', a:'Holds the memory address of the NEXT instruction to be fetched. Automatically increments after each fetch.'},
+          {q:'MAR (Memory Address Register)', a:'Holds the address of the memory location currently being read from or written to.'},
+          {q:'MDR (Memory Data Register)', a:'Temporarily holds data that has just been fetched from memory, or data about to be written to memory. Acts as a buffer.'},
+          {q:'CIR (Current Instruction Register)', a:'Holds the instruction that is currently being decoded and executed by the CPU.'},
+          {q:'ACC (Accumulator)', a:'General-purpose register that stores the results of calculations performed by the ALU.'},
+          {q:'Fetch-Execute cycle', a:'The process the CPU repeats continuously: FETCH instruction from memory → DECODE it → EXECUTE it → repeat.'},
+        ],
+        must: [
+          'PC → holds address of NEXT instruction (not the current one)',
+          'MAR → holds the address; MDR → holds the data being transferred',
+          'CIR → holds the instruction currently being executed',
+          'Fetch: MAR←PC, MDR←Memory[MAR], CIR←MDR, PC←PC+1',
+          'The cycle repeats until the program ends',
+        ],
+        watch: '⚠️ Common mistake: saying the PC holds the CURRENT instruction. It always points to the NEXT one. The CIR holds the current instruction.',
+        quiz: [
+          {q:'Which register holds the address of the NEXT instruction to be fetched?',opts:['MAR','MDR','PC','CIR'],ans:2,exp:'The Program Counter (PC) always holds the address of the next instruction. It increments after each fetch.'},
+          {q:'In the fetch stage, what happens to the PC after the instruction address is sent to the MAR?',opts:['It resets to zero','It is copied to the CIR','It increments by 1','It is stored in the MDR'],ans:2,exp:'After the address is sent to the MAR, the PC increments so it points to the next instruction ready for the next cycle.'},
+          {q:'Which register temporarily holds data being transferred to or from memory?',opts:['ACC','PC','CIR','MDR'],ans:3,exp:'The MDR (Memory Data Register) acts as a buffer for data going to or from main memory.'},
+        ]
+      },
+      {
+        title: 'CPU Performance', ref: '1.1.3',
+        terms: [
+          {q:'Clock speed', a:'The number of cycles a CPU can perform per second, measured in GHz. A higher clock speed means more instructions can be executed per second.'},
+          {q:'Number of cores', a:'Each core is an independent processing unit within the CPU. More cores allow multiple tasks to be processed simultaneously (parallel processing).'},
+          {q:'Cache memory', a:'Very fast memory located inside or very close to the CPU. Stores frequently used instructions/data so the CPU does not have to wait for slower RAM.'},
+          {q:'Cache levels (L1, L2, L3)', a:'L1 is fastest and smallest (inside the core); L2 is mid-size; L3 is largest and shared between cores. Cache miss = data not in cache, must fetch from RAM.'},
+        ],
+        must: [
+          'Three factors affecting CPU performance: clock speed, number of cores, cache size',
+          'Higher clock speed = more instructions per second',
+          'More cores = better at multitasking / parallel tasks',
+          'More/larger cache = fewer slow trips to RAM',
+        ],
+        watch: '⚠️ "A faster clock speed always means a faster computer" is FALSE — bottlenecks elsewhere (RAM, cache) can limit performance. Also: more cores only help if software is written to use them.',
+        quiz: [
+          {q:'Which THREE factors affect CPU performance?',opts:['Clock speed, number of cores, cache size','Clock speed, RAM capacity, screen resolution','Number of cores, USB ports, cache size','Clock speed, number of cores, hard drive speed'],ans:0,exp:'The three main CPU performance factors are clock speed, number of cores, and amount/size of cache memory.'},
+          {q:'What is the purpose of cache memory?',opts:['To store the operating system permanently','To back up data if power is lost','To store frequently used data close to the CPU for fast access','To increase the clock speed of the CPU'],ans:2,exp:'Cache stores frequently used data/instructions very close to the CPU, reducing the number of slow RAM accesses needed.'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'memory', title: '1.2 Memory & Storage', icon: '💾',
+    color: 'var(--c2)', bg: 'rgba(124,107,255,.12)',
+    sub: 'RAM, ROM, Virtual Memory, Storage Types',
+    topics: [
+      {
+        title: 'Primary Storage', ref: '1.2.1',
+        terms: [
+          {q:'RAM (Random Access Memory)', a:'Volatile (loses data when power off), read-write memory that stores the currently running programs and data the CPU is actively using.'},
+          {q:'ROM (Read Only Memory)', a:'Non-volatile, read-only memory. Stores the boot program (BIOS/UEFI). Cannot be changed during normal operation.'},
+          {q:'Volatile', a:'Loses all stored data when the power is switched off. RAM is volatile.'},
+          {q:'Non-volatile', a:'Retains data even when power is off. ROM and secondary storage are non-volatile.'},
+          {q:'Virtual memory', a:'An area of secondary storage (HDD/SSD) used as an extension of RAM when RAM is full. Slower than real RAM — causes the computer to slow down.'},
+        ],
+        must: [
+          'RAM = volatile, read-write, stores current programs and data',
+          'ROM = non-volatile, read-only, stores the boot program',
+          'More RAM = more programs can run simultaneously without slowing down',
+          'Virtual memory = uses secondary storage when RAM is full — much slower',
+        ],
+        watch: '⚠️ Do not say "RAM stores data permanently" — it is VOLATILE. And "ROM can be written to" is false for standard ROM.',
+        quiz: [
+          {q:'What does volatile mean?',opts:['Data is read-only','Data is lost when power is removed','Data transfers very quickly','Data is stored permanently'],ans:1,exp:'Volatile memory loses all stored data when the power supply is removed. RAM is volatile.'},
+          {q:'Why might virtual memory slow down a computer?',opts:['It uses the CPU more intensively','It reduces the clock speed','It uses secondary storage which is much slower than RAM','It overwrites files on the hard drive'],ans:2,exp:'Virtual memory is stored on secondary storage (HDD/SSD) which is significantly slower than RAM, causing a performance drop.'},
+          {q:'Which memory type stores the boot program?',opts:['RAM','Cache','Virtual memory','ROM'],ans:3,exp:'ROM (Read Only Memory) stores the boot program (BIOS/UEFI) that runs when the computer first starts.'},
+        ]
+      },
+      {
+        title: 'Secondary Storage', ref: '1.2.2',
+        terms: [
+          {q:'HDD (Hard Disk Drive)', a:'Magnetic storage. Uses spinning platters and read/write heads. Large capacity, cheap per GB, but slower and fragile due to moving parts.'},
+          {q:'SSD (Solid State Drive)', a:'Flash memory storage. No moving parts — faster, lighter, more durable, silent, and uses less power than HDDs. More expensive per GB.'},
+          {q:'Optical storage', a:'Uses lasers to read/write data on discs (CD, DVD, Blu-ray). Portable, cheap, but slower and lower capacity than HDD/SSD.'},
+          {q:'Flash/USB storage', a:'Portable, solid state storage. No moving parts. Convenient but generally smaller capacity than internal drives.'},
+        ],
+        must: [
+          'HDD: magnetic, moving parts, cheap, large, fragile, slower',
+          'SSD: flash, no moving parts, fast, durable, expensive, silent',
+          'Optical: laser-based, portable, lower capacity',
+          'All secondary storage is non-volatile',
+        ],
+        watch: '⚠️ Do not say SSDs are always better — HDDs are cheaper per GB for large storage. Choose based on the scenario given.',
+        quiz: [
+          {q:'Which of these is an advantage of SSD over HDD?',opts:['Cheaper per GB','Higher maximum storage capacity','Faster read/write speeds','Uses magnetic platters for reliability'],ans:2,exp:'SSDs are faster than HDDs because they have no moving parts and use flash memory for near-instant access.'},
+          {q:'A student drops their laptop. Which storage type is most at risk of data loss?',opts:['SSD','USB flash drive','HDD','Optical disc'],ans:2,exp:'HDDs have moving parts (spinning platters and read/write heads) that can be damaged by physical impact, making them vulnerable to drops.'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'networks', title: '1.3 Computer Networks', icon: '🌐',
+    color: 'var(--c4)', bg: 'rgba(6,214,160,.12)',
+    sub: 'LAN, WAN, Protocols, TCP/IP, Layers',
+    topics: [
+      {
+        title: 'Networks & Topologies', ref: '1.3.1',
+        terms: [
+          {q:'LAN (Local Area Network)', a:'A network covering a small geographical area (e.g. a school, home, or office) usually owned and managed by one organisation.'},
+          {q:'WAN (Wide Area Network)', a:'A network spanning a large geographical area, connecting multiple LANs. The internet is the largest WAN. Infrastructure is typically leased from telecoms companies.'},
+          {q:'Star topology', a:'All devices connect to a central switch. If one cable fails, only that device is affected. If the switch fails, the whole network goes down.'},
+          {q:'Mesh topology', a:'Every device connects to every other device. Highly resilient — no single point of failure. Full mesh: n(n-1)/2 connections.'},
+          {q:'Client-server network', a:'A model where clients (devices) request services/resources from a centralised server. The server manages access, storage, and security.'},
+          {q:'Peer-to-peer network', a:'All devices are equal — any device can share resources directly with any other. Common in homes. No central server.'},
+        ],
+        must: [
+          'LAN = small area, one organisation; WAN = large area, multiple locations',
+          'Star topology: single point of failure = the switch',
+          'Mesh topology: resilient, no single point of failure, expensive to install',
+          'Full mesh connections formula: n(n-1)/2',
+          'Client-server: centralised control, better security; Peer-to-peer: simpler, cheaper',
+        ],
+        watch: '⚠️ "Hub" is outdated — modern star networks use a SWITCH. Using "hub" in an exam answer may lose a mark.',
+        quiz: [
+          {q:'In a star topology, what happens if the central switch fails?',opts:['Only one device loses connection','The network continues via alternative routes','The entire network goes down','The devices reconnect as peer-to-peer'],ans:2,exp:'In a star topology, all devices connect through one central switch. If it fails, ALL devices lose network access — this is the single point of failure.'},
+          {q:'How many connections does a full mesh network of 5 devices have?',opts:['5','8','10','12'],ans:2,exp:'Full mesh: n(n-1)/2 = 5×4/2 = 10 connections.'},
+        ]
+      },
+      {
+        title: 'Protocols & Layers', ref: '1.3.2',
+        terms: [
+          {q:'Protocol', a:'A set of rules that govern how data is transmitted between devices on a network. Ensures all devices communicate in the same way.'},
+          {q:'HTTP', a:'HyperText Transfer Protocol — used to transfer web pages between a web server and browser. Data is sent as plain text (not encrypted).'},
+          {q:'HTTPS', a:'HTTP Secure — same as HTTP but with encryption. Used for secure websites (banking, logins). Data cannot be read if intercepted.'},
+          {q:'FTP', a:'File Transfer Protocol — used to transfer files between a client and server over a network. Commonly used to upload websites.'},
+          {q:'SMTP', a:'Simple Mail Transfer Protocol — used to SEND email from a client to a mail server.'},
+          {q:'IMAP', a:'Internet Message Access Protocol — used to RECEIVE/access email. Emails stay on the server and are synced across multiple devices.'},
+          {q:'POP', a:'Post Office Protocol — downloads emails to one device and usually removes them from the server. Not synced across devices.'},
+          {q:'Standard', a:'A set of hardware/software specifications that allow products from different manufacturers to communicate and work together.'},
+          {q:'Layers (TCP/IP model)', a:'Network communication is divided into layers, each with a defined responsibility. This reduces complexity and allows different manufacturers to build compatible products.'},
+        ],
+        must: [
+          'SMTP = sending email; IMAP/POP = receiving email',
+          'IMAP = stays on server, synced across devices; POP = downloaded to one device',
+          'HTTPS = HTTP + encryption',
+          'Standards allow interoperability between different manufacturers',
+          'Layering breaks networking complexity into manageable sub-tasks',
+        ],
+        watch: '⚠️ SMTP vs IMAP/POP is a very common exam question. SMTP SENDS. IMAP/POP RECEIVE. Get this wrong and you lose easy marks.',
+        quiz: [
+          {q:'A user reads the same emails on their phone AND laptop. Which protocol are they using?',opts:['POP','SMTP','IMAP','FTP'],ans:2,exp:'IMAP keeps emails on the server and syncs them across all devices. POP downloads to one device only.'},
+          {q:'What does HTTPS add compared to HTTP?',opts:['Faster loading times','Compression of web pages','Encryption of data in transit','Larger file transfer limits'],ans:2,exp:'HTTPS encrypts data between the browser and server, meaning intercepted data cannot be read.'},
+          {q:'Which protocol is used to upload files to a web server?',opts:['SMTP','HTTP','IMAP','FTP'],ans:3,exp:'FTP (File Transfer Protocol) is specifically designed for transferring files between a client and server.'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'security', title: '1.4 Network Security', icon: '🔒',
+    color: 'var(--c3)', bg: 'rgba(255,107,107,.12)',
+    sub: 'Threats, Prevention, Encryption',
+    topics: [
+      {
+        title: 'Network Threats', ref: '1.4.1',
+        terms: [
+          {q:'Malware', a:'Malicious software designed to damage, disrupt, or gain unauthorised access to a computer system. Umbrella term for viruses, ransomware, spyware, etc.'},
+          {q:'Phishing', a:'A social engineering attack where a fraudulent email/website tricks users into revealing passwords or personal data by pretending to be a trusted source.'},
+          {q:'Brute force attack', a:'Automatically trying every possible password combination until the correct one is found.'},
+          {q:'SQL injection', a:'Inserting malicious SQL code into a web form/input field to manipulate or access a database illegally.'},
+          {q:'Denial of Service (DoS)', a:'Flooding a server with so many requests that it becomes overwhelmed and cannot respond to legitimate users.'},
+          {q:'Social engineering', a:'Manipulating people (rather than systems) into giving up confidential information. Phishing is an example.'},
+        ],
+        must: [
+          'Phishing = social engineering (tricks people); Brute force = computational (tries all passwords)',
+          'DoS = floods server with requests until it crashes',
+          'SQL injection = malicious code in input fields to access databases',
+          'Malware includes: viruses, ransomware, spyware, worms, trojans',
+        ],
+        watch: '⚠️ Phishing is NOT a technical hack — it exploits people. Brute force is NOT guessing — it tries EVERY combination systematically.',
+        quiz: [
+          {q:'A website login is targeted by software that tries every possible password automatically. What is this attack called?',opts:['Phishing','DoS attack','Brute force attack','SQL injection'],ans:2,exp:'Brute force attacks systematically try every possible password combination until one works.'},
+          {q:'Which type of attack involves manipulating people rather than systems?',opts:['SQL injection','Social engineering','Brute force','Malware'],ans:1,exp:'Social engineering exploits human trust rather than technical vulnerabilities. Phishing is the most common example.'},
+          {q:'What is a Denial of Service (DoS) attack?',opts:['Stealing user passwords via email','Flooding a server with requests until it cannot respond','Inserting code into a database','Guessing encryption keys'],ans:1,exp:'A DoS attack overwhelms a server with traffic so it cannot serve legitimate users.'},
+        ]
+      },
+      {
+        title: 'Prevention & Encryption', ref: '1.4.2',
+        terms: [
+          {q:'Firewall', a:'Hardware or software that monitors and controls incoming/outgoing network traffic based on security rules. Blocks unauthorised access.'},
+          {q:'Encryption', a:'Converting data into an unreadable format (ciphertext) using an algorithm and key. Only someone with the correct decryption key can read it.'},
+          {q:'Anti-malware software', a:'Detects, quarantines, and removes malicious software by scanning files against a database of known threats (virus signatures).'},
+          {q:'User access levels', a:'Restricting what different users can access or do on a system. Principle of least privilege — users only get the access they need.'},
+          {q:'Strong passwords', a:'Passwords that are long and contain a mix of uppercase, lowercase, numbers, and symbols. Hard to brute-force.'},
+          {q:'Two-factor authentication (2FA)', a:'Requires two separate forms of verification (e.g. password + code sent to phone) to access an account. Much harder to breach.'},
+        ],
+        must: [
+          'Firewalls filter traffic; anti-malware removes threats after infection',
+          'Encryption = scrambles data so it is unreadable without the key',
+          'HTTPS uses encryption to protect data in transit',
+          'Strong passwords + 2FA are the best personal protection',
+          'User access levels = people only access what they need (least privilege)',
+        ],
+        watch: '⚠️ Firewalls prevent unauthorised ACCESS. Anti-malware deals with threats already on the system. They serve different purposes — both are needed.',
+        quiz: [
+          {q:'What does encryption do to data?',opts:['Compresses it to save space','Converts it into an unreadable format without the key','Backs it up to a secure server','Removes malware from the file'],ans:1,exp:'Encryption converts plaintext data into ciphertext using an algorithm and key. Without the key, the data cannot be read.'},
+          {q:'What is two-factor authentication?',opts:['Having two different passwords for one account','Using two anti-malware programs','Requiring two forms of verification to log in','Encrypting data twice'],ans:2,exp:'2FA requires two separate verification methods (e.g. password + SMS code), making accounts much harder to breach even if one factor is compromised.'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'software', title: '1.5 Systems Software', icon: '⚙️',
+    color: 'var(--c5)', bg: 'rgba(255,209,102,.12)',
+    sub: 'Operating Systems, Utility Software',
+    topics: [
+      {
+        title: 'Operating Systems', ref: '1.5.1',
+        terms: [
+          {q:'Operating system (OS)', a:'Software that manages hardware and software resources, providing an interface between user/applications and the hardware.'},
+          {q:'Memory management', a:'The OS allocates RAM to different programs, manages virtual memory, and ensures programs do not use each others memory space.'},
+          {q:'Process management', a:'The OS schedules which process uses the CPU at any time, handles multitasking, and manages process states (running, waiting, ready).'},
+          {q:'File management', a:'The OS organises files into a directory structure, controls read/write access, and manages file naming, storage, and retrieval.'},
+          {q:'Device management', a:'The OS communicates with hardware devices via device drivers — software that translates OS commands into device-specific signals.'},
+          {q:'User interface', a:'The OS provides a way for users to interact with the computer — GUI (Graphical User Interface) or CLI (Command Line Interface).'},
+        ],
+        must: [
+          'OS functions: memory management, process management, file management, device management, user interface',
+          'Device drivers allow the OS to communicate with hardware',
+          'GUI = visual (Windows, macOS); CLI = text-based commands',
+          'The OS manages multitasking — switching between processes rapidly',
+        ],
+        watch: '⚠️ "Manages the computer" is too vague for a mark. Always name a SPECIFIC function: memory management, process scheduling, file management, etc.',
+        quiz: [
+          {q:'What is the role of a device driver?',opts:['Speeds up the CPU','Translates OS commands into device-specific instructions','Manages user account security','Compresses files for storage'],ans:1,exp:'Device drivers act as translators between the OS and hardware, allowing the OS to control devices without needing to know their specific technical details.'},
+          {q:'A student opens 4 applications at once. Which OS function ensures they all run?',opts:['File management','User interface','Process management','Device management'],ans:2,exp:'Process management handles multitasking — the OS schedules CPU time between multiple running processes.'},
+        ]
+      },
+      {
+        title: 'Utility Software', ref: '1.5.2',
+        terms: [
+          {q:'Defragmentation', a:'Reorganises fragmented files on an HDD so that file parts are stored contiguously, making read/write faster. NOT needed for SSDs.'},
+          {q:'Compression', a:'Reduces file size. Lossless (e.g. ZIP) = no data lost, file restored perfectly. Lossy (e.g. JPEG, MP3) = some data permanently removed for greater compression.'},
+          {q:'Encryption (utility)', a:'Utility software that encrypts files/drives to protect data from unauthorised access, even if the physical device is stolen.'},
+          {q:'Backup software', a:'Automatically copies data to a separate location (external drive, cloud) so it can be restored if lost, corrupted, or deleted.'},
+          {q:'Anti-malware (utility)', a:'Scans, detects, quarantines and removes malicious software from a system.'},
+        ],
+        must: [
+          'Defragmentation: reorganises HDD files for faster access. SSDs do NOT need defragmenting',
+          'Lossless compression: original file perfectly recoverable (ZIP, PNG)',
+          'Lossy compression: data permanently lost (JPEG, MP3) — smaller file, lower quality',
+          'Backup: essential for data recovery after loss or corruption',
+        ],
+        watch: '⚠️ Defragmentation does NOT work the same on SSDs — saying "defragment an SSD" shows a misunderstanding. SSDs have no moving parts and do not benefit from it.',
+        quiz: [
+          {q:'A photo is saved as a JPEG. What type of compression is used?',opts:['Lossless','Run-length encoding','Lossy','Delta encoding'],ans:2,exp:'JPEG uses lossy compression — some image data is permanently discarded to achieve a smaller file size. Quality decreases slightly but files are much smaller.'},
+          {q:'Why should you NOT defragment an SSD?',opts:['SSDs are too fast to benefit','SSDs use magnetic platters that would be damaged','SSDs have no moving parts and do not benefit from file reorganisation','SSDs already store files contiguously'],ans:2,exp:'Defragmentation is designed for HDDs with moving read/write heads. SSDs access all locations equally fast and defragmentation would cause unnecessary write cycles, reducing lifespan.'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'ethical', title: '1.6 Ethical & Legal', icon: '⚖️',
+    color: 'var(--c6)', bg: 'rgba(255,159,67,.12)',
+    sub: 'Legislation, Privacy, Environmental Impact',
+    topics: [
+      {
+        title: 'Key Legislation', ref: '1.6.1',
+        terms: [
+          {q:'Data Protection Act 2018 / UK GDPR', a:'Protects personal data held by organisations. Data must be: collected lawfully, kept accurate, stored securely, not kept longer than necessary, and not shared without consent.'},
+          {q:'Computer Misuse Act 1990', a:'Makes it illegal to: (1) access a computer without authorisation, (2) access with intent to commit further crimes, (3) unauthorised modification of computer material (e.g. installing malware).'},
+          {q:'Copyright, Designs and Patents Act 1988', a:'Protects original creative works (software, music, text, images). Copying software without a licence is illegal. Open source software is an exception.'},
+          {q:'Freedom of Information Act 2000', a:'Gives the public the right to request information held by public authorities (government, NHS, schools).'},
+        ],
+        must: [
+          'DPA/GDPR = personal data protection — organisations must handle data responsibly',
+          'Computer Misuse Act = hacking offences — unauthorised access, modification',
+          'Copyright Act = protects creative works including software',
+          'Do not confuse: DPA (data privacy) vs CMA (hacking/unauthorised access)',
+        ],
+        watch: '⚠️ Very commonly confused: DPA covers personal data misuse. CMA covers hacking and unauthorised access. They are DIFFERENT laws for DIFFERENT crimes.',
+        quiz: [
+          {q:'Which law makes hacking illegal?',opts:['Data Protection Act 2018','Computer Misuse Act 1990','Copyright Act 1988','Freedom of Information Act'],ans:1,exp:'The Computer Misuse Act 1990 specifically criminalises unauthorised access to computer systems and malicious modification of data.'},
+          {q:'A company keeps customer data longer than necessary. Which law do they breach?',opts:['Computer Misuse Act','Copyright Act','Data Protection Act','Freedom of Information Act'],ans:2,exp:'The Data Protection Act / UK GDPR states that personal data must not be kept for longer than necessary. This is one of its key principles.'},
+          {q:'Which law protects software from being copied without a licence?',opts:['Data Protection Act','Computer Misuse Act','Freedom of Information Act','Copyright, Designs and Patents Act'],ans:3,exp:'The Copyright, Designs and Patents Act 1988 protects software (and other creative works) from being copied, distributed, or modified without permission.'},
+        ]
+      },
+      {
+        title: 'Ethical & Environmental Issues', ref: '1.6.2',
+        terms: [
+          {q:'Open source software', a:'Software where the source code is freely available for anyone to view, modify, and distribute. Usually free to use. Examples: Linux, VLC, Firefox.'},
+          {q:'Proprietary software', a:'Software owned by a company. Source code is not available. Usually requires a licence/payment. Examples: Microsoft Office, Adobe Photoshop.'},
+          {q:'Environmental impact', a:'Technology contributes to CO2 emissions (data centres, manufacturing, e-waste). However, it also enables working from home, reducing travel emissions.'},
+          {q:'Digital divide', a:'The gap between those who have access to technology and the internet and those who do not, due to geography, income, or disability.'},
+        ],
+        must: [
+          'Open source: free, source code available, community maintained',
+          'Proprietary: owned, paid licence, source code hidden',
+          'Technology impacts environment: data centres use huge amounts of electricity',
+          'Digital divide: unequal access to technology creates social inequality',
+        ],
+        watch: '⚠️ Open source does NOT always mean free of charge (though most are). It means the source code is openly available. Free software and open source are related but not identical concepts.',
+        quiz: [
+          {q:'What is open source software?',opts:['Software that is always free to download','Software where the source code is publicly available to view and modify','Software made by the government','Software with no copyright protection'],ans:1,exp:'Open source means the source code is made publicly available — anyone can view, modify, and distribute it. It is usually free but not always.'},
+          {q:'What is the digital divide?',opts:['The difference between wired and wireless networks','The gap between those with and without access to technology','The difference between IPv4 and IPv6','The space between bits in binary data'],ans:1,exp:'The digital divide refers to the inequality between those who have access to technology/internet and those who do not.'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'algorithms', title: '2.1 Algorithms', icon: '🔍',
+    color: '#a78bfa', bg: 'rgba(167,139,250,.12)',
+    sub: 'Decomposition, Search, Sort, Pseudocode, Flowcharts',
+    topics: [
+      {
+        title: 'Computational Thinking', ref: '2.1.1',
+        terms: [
+          {q:'Decomposition', a:'Breaking a complex problem down into smaller, more manageable sub-problems that can be solved individually.'},
+          {q:'Abstraction', a:'Removing unnecessary detail and focusing only on the information that is relevant to solving the problem.'},
+          {q:'Algorithmic thinking', a:'Developing a step-by-step solution (algorithm) that can be followed to solve a problem.'},
+          {q:'Algorithm', a:'A precise, step-by-step set of instructions for solving a problem or completing a task.'},
+        ],
+        must: [
+          'Decomposition = break down; Abstraction = remove unnecessary detail; Algorithmic = create step-by-step solution',
+          'All three are core principles of computational thinking',
+        ],
+        watch: '⚠️ Abstraction is NOT simplification — it is specifically about removing IRRELEVANT detail. A map is an abstraction of real geography.',
+        quiz: [
+          {q:'A developer breaks a large program into smaller modules. This is an example of:',opts:['Abstraction','Decomposition','Algorithmic thinking','Pattern recognition'],ans:1,exp:'Decomposition is breaking a complex problem into smaller, manageable sub-problems — exactly what modular programming does.'},
+          {q:'A map shows roads and landmarks but not every tree or building. This is an example of:',opts:['Decomposition','Compression','Abstraction','Algorithmic design'],ans:2,exp:'Abstraction removes unnecessary detail. A map abstracts the real world by showing only relevant information for navigation.'},
+        ]
+      },
+      {
+        title: 'Searching & Sorting', ref: '2.1.2',
+        terms: [
+          {q:'Linear search', a:'Checks each item in a list one by one from the start until the target is found. Works on unsorted lists. O(n) — slow for large lists.'},
+          {q:'Binary search', a:'Repeatedly halves a sorted list. Compares the middle element with the target — search either left or right half. Much faster than linear search for large data. List MUST be sorted.'},
+          {q:'Bubble sort', a:'Repeatedly compares adjacent pairs and swaps them if in wrong order. Multiple passes until no swaps needed. Simple but slow — O(n²).'},
+          {q:'Merge sort', a:'Divide the list in half recursively until single elements, then merge them back in sorted order. Efficient — O(n log n). Better than bubble sort for large datasets.'},
+          {q:'Insertion sort', a:'Builds a sorted list one item at a time by inserting each new item into its correct position. Efficient for nearly-sorted data.'},
+        ],
+        must: [
+          'Binary search requires a SORTED list — cannot be used on unsorted data',
+          'Binary search: start at middle, halve the search space each time',
+          'Bubble sort: simple but inefficient for large data',
+          'Merge sort: efficient, divide and conquer',
+          'Linear search works on unsorted lists; binary search does not',
+        ],
+        watch: '⚠️ If asked to use binary search on an UNSORTED list — you must sort it first. Exam questions sometimes test whether you know this.',
+        quiz: [
+          {q:'Binary search can only be used on a list that is:',opts:['Empty','Sorted','Longer than 10 items','Stored in RAM'],ans:1,exp:'Binary search requires a sorted list because it makes decisions based on whether the target is greater or less than the midpoint.'},
+          {q:'Which sorting algorithm works by repeatedly swapping adjacent items that are in the wrong order?',opts:['Merge sort','Insertion sort','Bubble sort','Binary sort'],ans:2,exp:'Bubble sort repeatedly compares adjacent elements and swaps them if theyre in the wrong order, "bubbling" larger values to the end.'},
+          {q:'A list has 1000 items. Which is more efficient for searching?',opts:['Linear search','Binary search','Bubble sort','Insertion sort'],ans:1,exp:'Binary search is O(log n) — for 1000 items it takes at most ~10 comparisons. Linear search could take up to 1000 comparisons.'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'programming', title: '2.2 Programming', icon: '💻',
+    color: '#34d399', bg: 'rgba(52,211,153,.12)',
+    sub: 'Variables, Data Types, Constructs, Subprograms',
+    topics: [
+      {
+        title: 'Data Types & Variables', ref: '2.2.1',
+        terms: [
+          {q:'Integer', a:'A whole number (positive, negative, or zero). No decimal point. E.g. -5, 0, 42.'},
+          {q:'Real / Float', a:'A number with a decimal point. E.g. 3.14, -0.5, 100.0.'},
+          {q:'Boolean', a:'Can only hold one of two values: True or False (or 1/0). Used in conditions and logic.'},
+          {q:'String', a:'A sequence of characters (letters, numbers, symbols). Always enclosed in quotes. E.g. "Hello", "42".'},
+          {q:'Character', a:'A single character — for example the letter A, digit 7, or symbol !.'},
+          {q:'Variable', a:'A named memory location that stores a value which can change during the program.'},
+          {q:'Constant', a:'A named memory location whose value is set once and CANNOT be changed during program execution.'},
+        ],
+        must: [
+          'Integer = whole; Real = decimal; Boolean = True/False; String = text in quotes',
+          '"42" is a STRING; 42 is an INTEGER — quote marks matter',
+          'Variables can change; constants cannot',
+          'Choose the correct data type for the scenario (e.g. age = integer, price = real, name = string)',
+        ],
+        watch: '⚠️ "42" in quotes is a STRING not an integer. You cannot do maths on a string. Type matters enormously in programming questions.',
+        quiz: [
+          {q:'Which data type would you use to store a students age?',opts:['String','Boolean','Integer','Real'],ans:2,exp:'Age is a whole number — an integer. Real would be used if decimal values were possible (e.g. a measurement).'},
+          {q:'Which data type can only hold True or False?',opts:['String','Integer','Boolean','Real'],ans:2,exp:'Boolean data type can only hold True or False (or 1/0). Used in conditions: if x > 5 returns a Boolean.'},
+          {q:'What is the difference between a variable and a constant?',opts:['Variables are faster to access','Constants can change; variables cannot','Variables can change; constants cannot','There is no difference in most languages'],ans:2,exp:'A variables value can change during execution. A constant is set once and cannot be modified — used for values like π or maximum class size.'},
+        ]
+      },
+      {
+        title: 'Programming Constructs', ref: '2.2.2',
+        terms: [
+          {q:'Sequence', a:'Instructions executed one after another in order. The most basic construct.'},
+          {q:'Selection (IF statements)', a:'Executes different code depending on whether a condition is True or False. IF…THEN…ELSE…ENDIF'},
+          {q:'Iteration (loops)', a:'Repeating a block of code. FOR loop (fixed number of times), WHILE loop (while a condition is True), DO-WHILE (runs at least once).'},
+          {q:'FOR loop', a:'Repeats a fixed number of times. FOR i ← 1 TO 10. Good when you know exactly how many iterations needed.'},
+          {q:'WHILE loop', a:'Repeats while a condition is True. Condition checked BEFORE each iteration. May never execute if condition starts False.'},
+          {q:'Subprogram (procedure/function)', a:'A named block of reusable code. A procedure does not return a value; a function returns a value. Reduces repetition (DRY — Dont Repeat Yourself).'},
+          {q:'Parameter', a:'A value passed INTO a subprogram when it is called, used within that subprogram.'},
+          {q:'Return value', a:'A value sent BACK from a function to the code that called it.'},
+        ],
+        must: [
+          'Three constructs: sequence, selection, iteration — all programs use these',
+          'FOR = known number of iterations; WHILE = condition-based; DO-WHILE = runs at least once',
+          'Functions RETURN a value; procedures do NOT',
+          'Parameters pass data IN to a subprogram',
+        ],
+        watch: '⚠️ WHILE loop condition is checked BEFORE the body — it might never run. DO-WHILE runs at LEAST once. Know the difference.',
+        quiz: [
+          {q:'Which loop is best when you know exactly how many times to repeat?',opts:['WHILE','DO-WHILE','FOR','IF-ELSE'],ans:2,exp:'A FOR loop is ideal when the number of iterations is known in advance: FOR i ← 1 TO n.'},
+          {q:'What is the difference between a function and a procedure?',opts:['Functions use loops; procedures do not','Functions return a value; procedures do not','Procedures take parameters; functions do not','There is no difference'],ans:1,exp:'A function performs a task AND returns a value. A procedure performs a task but does not return a value.'},
+          {q:'What does a parameter do?',opts:['Returns a value from a function','Stores the result of a calculation','Passes data into a subprogram when called','Defines the type of variable used'],ans:2,exp:'Parameters allow data to be passed into a subprogram so it can work with different values each time it is called.'},
+        ]
+      },
+      {
+        title: 'Arrays & File Handling', ref: '2.2.3',
+        terms: [
+          {q:'Array', a:'A data structure that stores multiple values of the SAME data type under a single variable name, accessed using an index. Index usually starts at 0.'},
+          {q:'1D array', a:'A list of values. E.g. scores[0..4] stores 5 scores. Access: scores[2] returns the 3rd element.'},
+          {q:'2D array', a:'A grid/table of values with rows and columns. Access: grid[row][column]'},
+          {q:'File handling', a:'Reading from and writing to files stored on secondary storage. Operations: open, read, write, close.'},
+        ],
+        must: [
+          'Arrays start at index 0 (in OCR pseudocode)',
+          'All elements in an array must be the same data type',
+          '2D array: think of it as a table with rows and columns',
+          'Always close a file after opening it',
+        ],
+        watch: '⚠️ Array indices start at 0. scores[0] is the FIRST element. scores[4] is the FIFTH. Off-by-one errors are extremely common in exam questions.',
+        quiz: [
+          {q:'An array has 6 elements. What is the index of the LAST element?',opts:['6','5','7','4'],ans:1,exp:'Arrays are zero-indexed. An array with 6 elements has indices 0, 1, 2, 3, 4, 5. The last element is at index 5.'},
+          {q:'All elements in an array must be of the same what?',opts:['Value','Length','Data type','Name'],ans:2,exp:'Arrays store multiple values but they must all be of the same data type (e.g. all integers, all strings).'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'robust', title: '2.3 Robust Programs', icon: '🛡️',
+    color: '#fb923c', bg: 'rgba(251,146,60,.12)',
+    sub: 'Validation, Authentication, Testing',
+    topics: [
+      {
+        title: 'Validation & Authentication', ref: '2.3.1',
+        terms: [
+          {q:'Validation', a:'Checking that input data is reasonable, sensible, and within expected boundaries. Does NOT check if data is correct — only if it is acceptable.'},
+          {q:'Range check', a:'Checks that a value falls within an acceptable range. E.g. age must be between 0 and 120.'},
+          {q:'Type check', a:'Checks that data is the correct data type. E.g. ensuring a numeric field contains only numbers.'},
+          {q:'Length check', a:'Checks that data is the correct length. E.g. password must be at least 8 characters.'},
+          {q:'Presence check', a:'Checks that a field has not been left empty. E.g. username cannot be blank.'},
+          {q:'Format check', a:'Checks data matches a specific format. E.g. a date must be in DD/MM/YYYY format.'},
+          {q:'Authentication', a:'Verifying that a user is who they claim to be. Typically via username + password, biometrics, or 2FA.'},
+        ],
+        must: [
+          'Validation checks data is REASONABLE — not that it is CORRECT',
+          'Example: age=999 fails range check but age=25 passes — even if the actual age is 30',
+          'Know all six validation types: range, type, length, presence, format, check digit',
+          'Authentication = verifying identity; Authorisation = what youre allowed to do',
+        ],
+        watch: '⚠️ Validation does NOT check if data is TRUE. Entering age=25 when you are really 30 PASSES validation. Validation only checks if data is reasonable.',
+        quiz: [
+          {q:'A form checks that a date of birth is entered in DD/MM/YYYY format. What type of validation is this?',opts:['Range check','Presence check','Format check','Type check'],ans:2,exp:'A format check ensures data matches a required pattern or structure, such as a date format.'},
+          {q:'Which validation check ensures a field is not left blank?',opts:['Range check','Presence check','Type check','Format check'],ans:1,exp:'A presence check verifies that a mandatory field has been filled in — the field cannot be empty.'},
+          {q:'A user enters "hello" into a field that requires a number. Which check catches this?',opts:['Range check','Presence check','Format check','Type check'],ans:3,exp:'A type check verifies that the data is of the correct type. "hello" is a string, not a number, so the type check fails.'},
+        ]
+      },
+      {
+        title: 'Testing', ref: '2.3.2',
+        terms: [
+          {q:'Normal test data', a:'Valid data that the program should accept and process correctly. E.g. age = 25 for a range of 0–120.'},
+          {q:'Boundary test data', a:'Data at the exact limits of what is acceptable. E.g. for range 0–120: test with 0 and 120.'},
+          {q:'Erroneous test data', a:'Data that is clearly invalid and should be rejected. E.g. age = -1 or age = "abc" or age = 999.'},
+          {q:'Syntax error', a:'A grammar mistake in the code — the program cannot run at all. E.g. missing bracket, misspelled keyword.'},
+          {q:'Logic error', a:'The program runs but produces incorrect results due to a flaw in the algorithm. E.g. using + instead of *.'},
+          {q:'Runtime error', a:'An error that occurs while the program is running, causing it to crash. E.g. division by zero, array out of bounds.'},
+          {q:'Trace table', a:'A table used to manually track the value of variables through each step of an algorithm to find logic errors.'},
+        ],
+        must: [
+          'Three test data types: normal (valid), boundary (at the limit), erroneous (invalid)',
+          'Boundary: test EXACTLY at the limit (0 and 120, not 1 and 119)',
+          'Syntax error = wont run; Logic error = runs but wrong output; Runtime = crashes mid-run',
+          'Trace tables track variable values step by step to find logic errors',
+        ],
+        watch: '⚠️ Boundary data is the EXACT limit (e.g. 0 and 120), NOT just outside it. Values just outside (e.g. -1 and 121) are erroneous data.',
+        quiz: [
+          {q:'A program accepts ages 0–120. Which value is boundary test data?',opts:['50','25','-1','120'],ans:3,exp:'Boundary data tests the exact limits — 0 and 120. Values clearly inside (like 25 or 50) are normal data; -1 is erroneous.'},
+          {q:'A program runs but gives the wrong answer. What type of error is this?',opts:['Syntax error','Runtime error','Logic error','Compilation error'],ans:2,exp:'A logic error allows the program to run but produces incorrect results because of a flaw in the algorithm.'},
+          {q:'What does a trace table help identify?',opts:['Syntax errors before running','Logic errors by tracking variable values','Runtime errors caused by hardware','Compilation errors in the code'],ans:1,exp:'A trace table manually tracks variable values through each step, helping to identify where a logic error causes incorrect results.'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'boolean', title: '2.4 Boolean Logic', icon: '⊕',
+    color: '#e879f9', bg: 'rgba(232,121,249,.12)',
+    sub: 'Logic Gates, Truth Tables, Boolean Expressions',
+    topics: [
+      {
+        title: 'Logic Gates & Expressions', ref: '2.4.1',
+        terms: [
+          {q:'AND gate', a:'Output is 1 ONLY if BOTH inputs are 1. A AND B. Truth table: 00→0, 01→0, 10→0, 11→1'},
+          {q:'OR gate', a:'Output is 1 if AT LEAST ONE input is 1. A OR B. Truth table: 00→0, 01→1, 10→1, 11→1'},
+          {q:'NOT gate', a:'Inverts the input. Output is 1 if input is 0, and 0 if input is 1. NOT A. Single input.'},
+          {q:'Truth table', a:'A table showing all possible input combinations and the resulting output for a logic expression or circuit.'},
+          {q:'Boolean expression', a:'An expression using AND, OR, NOT that evaluates to True or False. E.g. A AND (NOT B)'},
+        ],
+        must: [
+          'AND: both must be 1 for output to be 1',
+          'OR: at least one must be 1 for output to be 1',
+          'NOT: flips the value (0→1, 1→0)',
+          'For truth tables: list ALL combinations (2 inputs = 4 rows: 00, 01, 10, 11)',
+          'Evaluate NOT first, then AND, then OR (order of precedence)',
+        ],
+        watch: '⚠️ Evaluate brackets and NOT FIRST before AND and OR. A AND NOT B — evaluate NOT B before applying AND.',
+        quiz: [
+          {q:'A=1, B=0. What is the result of A AND B?',opts:['0','1','True','Undefined'],ans:0,exp:'AND requires BOTH inputs to be 1. A=1 and B=0, so 1 AND 0 = 0.'},
+          {q:'A=0, B=1. What is the result of A OR B?',opts:['0','1','Undefined','2'],ans:1,exp:'OR outputs 1 if at least one input is 1. B=1, so 0 OR 1 = 1.'},
+          {q:'A=1. What is NOT A?',opts:['1','0','True','Unchanged'],ans:1,exp:'NOT inverts the input. NOT 1 = 0.'},
+        ]
+      },
+    ]
+  },
+  {
+    id: 'languages', title: '2.5 Languages & Translators', icon: '🔤',
+    color: '#38bdf8', bg: 'rgba(56,189,248,.12)',
+    sub: 'HLL, LLL, Compilers, Interpreters, Assemblers',
+    topics: [
+      {
+        title: 'Programming Languages', ref: '2.5.1',
+        terms: [
+          {q:'High-level language (HLL)', a:'Human-readable programming language (e.g. Python, Java). Easier to write, not tied to specific hardware, must be translated to machine code.'},
+          {q:'Low-level language', a:'Closer to machine code. Machine code (binary) and assembly language. Faster, less memory, but harder to write and hardware-specific.'},
+          {q:'Assembly language', a:'Uses mnemonics (short codes like ADD, MOV) instead of binary. One-to-one with machine code. Translated by an assembler.'},
+          {q:'Machine code', a:'Binary instructions (0s and 1s) directly executed by the CPU. Fastest possible execution but impossible to write by hand for complex programs.'},
+        ],
+        must: [
+          'HLL: human readable, portable, slower (needs translation)',
+          'LLL: machine readable, hardware-specific, faster execution',
+          'Assembly uses mnemonics → assembled into machine code',
+          'Machine code = binary = directly executed by CPU',
+        ],
+        watch: '⚠️ Assembly is NOT the same as machine code — assembly uses mnemonics which must be ASSEMBLED into binary machine code first.',
+        quiz: [
+          {q:'Which language is executed directly by the CPU without translation?',opts:['Python','Assembly language','Machine code','Java'],ans:2,exp:'Machine code consists of binary instructions that the CPU can execute directly. All other languages must be translated first.'},
+          {q:'Which type of language is easier for a human to write and understand?',opts:['Machine code','Assembly language','High-level language','Binary language'],ans:2,exp:'High-level languages like Python use English-like syntax that humans can read and write. They must be translated to machine code to run.'},
+        ]
+      },
+      {
+        title: 'Translators', ref: '2.5.2',
+        terms: [
+          {q:'Compiler', a:'Translates the ENTIRE high-level program into machine code in one go, creating an executable file. Fast to run after compilation. Errors reported after full compilation.'},
+          {q:'Interpreter', a:'Translates and executes a high-level program LINE BY LINE. Stops at the first error. Slower than compiled code but easier to debug and test.'},
+          {q:'Assembler', a:'Translates assembly language into machine code. One-to-one translation of each mnemonic to its binary equivalent.'},
+          {q:'IDE (Integrated Development Environment)', a:'Software that provides tools for writing and debugging code in one place: editor, compiler/interpreter, debugger, error highlighting.'},
+        ],
+        must: [
+          'Compiler: whole program at once → executable file → fast to run',
+          'Interpreter: line by line → stops at first error → slower to run, easier to debug',
+          'Assembler: assembly language → machine code (one-to-one)',
+          'IDE features: editor, auto-complete, syntax highlighting, debugger, error messages',
+        ],
+        watch: '⚠️ Compiled programs run FASTER (already translated). Interpreted programs are EASIER TO DEBUG (stops at first error and shows where). Know which advantage belongs to which.',
+        quiz: [
+          {q:'Which translator converts code line by line and stops at the first error?',opts:['Compiler','Assembler','Interpreter','Linker'],ans:2,exp:'An interpreter translates and executes one line at a time, stopping when it encounters an error. This makes debugging easier.'},
+          {q:'After compilation, what does the user run?',opts:['The source code','The assembly language file','An executable machine code file','The interpreter'],ans:2,exp:'Compilation translates the entire source code into a standalone executable file (machine code) that runs directly on the hardware.'},
+          {q:'Which tool in an IDE helps find errors in code?',opts:['Compiler only','The assembler','The debugger','The file manager'],ans:2,exp:'The debugger allows you to step through code, inspect variable values, and identify where and why errors occur.'},
+        ]
+      },
+    ]
+  },
+];
+
+// All flashcards pooled
+let allFlashcards = [];
+SECTIONS.forEach(sec => {
+  sec.topics.forEach(topic => {
+    topic.terms.forEach(term => {
+      allFlashcards.push({ topic: sec.title, sub: topic.title, q: term.q, a: term.a });
+    });
+  });
+});
+
+// All quiz questions pooled
+let allQuizQs = [];
+SECTIONS.forEach(sec => {
+  sec.topics.forEach(topic => {
+    topic.quiz.forEach(q => {
+      allQuizQs.push({ topic: sec.title, ...q });
+    });
+  });
+});
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let ragState = JSON.parse(localStorage.getItem('j277_rag') || '{}');
+let fcIndex = 0;
+let fcDeck = [...allFlashcards];
+let fcKnown = new Set();
+let fcFilter = 'all';
+let quizQs = [];
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+
+// ═══════════════════════════════════════════════
+// RENDER SECTIONS
+// ═══════════════════════════════════════════════
+function renderSections() {
+  SECTIONS.forEach(sec => {
+    const el = document.getElementById('sec-' + sec.id);
+    if (!el) return;
+
+    let html = `
+      <div class="section-header">
+        <div class="section-icon" style="background:${sec.bg};color:${sec.color}">${sec.icon}</div>
+        <div>
+          <div class="section-title" style="color:${sec.color}">${sec.title}</div>
+          <div class="section-sub">${sec.sub}</div>
+        </div>
+        <div class="section-progress" id="prog-${sec.id}"></div>
+      </div>
+      <div class="topic-grid">
+    `;
+
+    sec.topics.forEach((topic, ti) => {
+      const cardId = `${sec.id}-${ti}`;
+      html += `
+        <div class="topic-card" id="card-${cardId}" style="border-color:var(--border)">
+          <div class="topic-card-header" onclick="toggleCard('${cardId}','${sec.color}')">
+            <div>
+              <div class="topic-card-title">${topic.title}</div>
+              <div class="topic-card-ref" style="color:${sec.color};opacity:.7">${topic.ref}</div>
+            </div>
+            <div class="toggle-icon">▼</div>
+          </div>
+          <div class="topic-card-body">
+
+            <div style="font-size:.7rem;font-family:'Space Mono',monospace;color:var(--muted);margin-bottom:.5rem;letter-spacing:.5px">KEY TERMS — tap to reveal</div>
+            <div class="terms-list">
+              ${topic.terms.map((t,i) => `
+                <div class="term-item" id="term-${cardId}-${i}" onclick="toggleTerm('${cardId}-${i}')">
+                  <div class="term-q">${t.q} <span class="term-reveal">tap →</span></div>
+                  <div class="term-a">${t.a}</div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div style="font-size:.7rem;font-family:'Space Mono',monospace;color:var(--muted);margin:.8rem 0 .4rem;letter-spacing:.5px">MUST KNOW</div>
+            <div class="must-know">
+              ${topic.must.map(m => `<div class="must-item"><div class="must-dot" style="background:${sec.color}"></div><span>${m}</span></div>`).join('')}
+            </div>
+
+            <div class="watch-out"><strong>Watch out!</strong> ${topic.watch}</div>
+
+            <div class="mini-quiz" id="mq-${cardId}">
+              <div class="mini-quiz-title">⚡ QUICK CHECK</div>
+              <div id="mqq-${cardId}"></div>
+            </div>
+
+            <div class="rag-row">
+              <span class="rag-label">My confidence:</span>
+              <button class="rag-btn rag-r ${ragState[cardId]==='r'?'active':''}" onclick="setRag('${cardId}','r',event)">🔴 Red</button>
+              <button class="rag-btn rag-a ${ragState[cardId]==='a'?'active':''}" onclick="setRag('${cardId}','a',event)">🟡 Amber</button>
+              <button class="rag-btn rag-g ${ragState[cardId]==='g'?'active':''}" onclick="setRag('${cardId}','g',event)">🟢 Green</button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    html += '</div>';
+    el.innerHTML = html;
+
+    // Initialise mini quizzes
+    sec.topics.forEach((topic, ti) => {
+      initMiniQuiz(`${sec.id}-${ti}`, topic.quiz, sec.color);
+    });
+  });
+
+  renderOverview();
+}
+
+function toggleCard(id, color) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+  if (card.classList.contains('open')) {
+    card.style.borderColor = color;
+  } else {
+    card.style.borderColor = 'var(--border)';
+  }
+}
+
+function toggleTerm(id) {
+  document.getElementById('term-' + id).classList.toggle('revealed');
+}
+
+function setRag(cardId, val, e) {
+  e.stopPropagation();
+  ragState[cardId] = val;
+  localStorage.setItem('j277_rag', JSON.stringify(ragState));
+  // Update buttons
+  ['r','a','g'].forEach(v => {
+    const btn = document.querySelector(`#card-${cardId} .rag-${v}`);
+    if (btn) btn.classList.toggle('active', v === val);
+  });
+  renderOverview();
+  updateProgress();
+}
+
+// ═══════════════════════════════════════════════
+// MINI QUIZ
+// ═══════════════════════════════════════════════
+function initMiniQuiz(cardId, questions, color) {
+  const el = document.getElementById('mqq-' + cardId);
+  if (!el || !questions.length) return;
+  let qi = 0;
+  renderMQ(el, questions, qi, color, cardId);
+}
+
+// Store quiz data by cardId to avoid passing JSON through onclick attributes
+const MQ_DATA = {};
+
+function renderMQ(el, questions, qi, color, cardId) {
+  MQ_DATA[cardId] = { questions, color };
+  const q = questions[qi];
+  el.innerHTML = `
+    <div class="quiz-q">${qi+1}/${questions.length}: ${q.q}</div>
+    <div class="quiz-options">
+      ${q.opts.map((o,i) => `<button class="quiz-opt" onclick="answerMQ(this,${i},${q.ans},'${cardId}',${qi})">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="mq-fb-${cardId}-${qi}"></div>
+    <div class="quiz-nav">
+      ${qi>0?`<button class="quiz-nav-btn" onclick="changeMQ('${cardId}',${qi-1})">← Prev</button>`:''}
+      ${qi<questions.length-1?`<button class="quiz-nav-btn" id="mq-next-${cardId}" onclick="changeMQ('${cardId}',${qi+1})" style="display:none">Next →</button>`:''}
+      <span class="quiz-count">${qi+1} / ${questions.length}</span>
+    </div>
+  `;
+}
+
+function answerMQ(btn, chosen, correct, cardId, qi) {
+  const opts = btn.parentElement.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById(`mq-fb-${cardId}-${qi}`);
+  const { questions } = MQ_DATA[cardId];
+  const q = questions[qi];
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.className = 'quiz-feedback show ok';
+    fb.textContent = '\u2713 Correct! ' + (q.exp || '');
+  } else {
+    btn.classList.add('wrong');
+    opts[correct].classList.add('correct');
+    fb.className = 'quiz-feedback show no';
+    fb.textContent = '\u2717 Not quite. ' + (q.exp || '');
+  }
+  const nextBtn = document.getElementById(`mq-next-${cardId}`);
+  if (nextBtn) nextBtn.style.display = 'inline-block';
+}
+
+function changeMQ(cardId, qi) {
+  const el = document.getElementById('mqq-' + cardId);
+  const { questions, color } = MQ_DATA[cardId];
+  renderMQ(el, questions, qi, color, cardId);
+}
+
+// ═══════════════════════════════════════════════
+// OVERVIEW
+// ═══════════════════════════════════════════════
+function renderOverview() {
+  const grid = document.getElementById('ov-grid');
+  if (!grid) return;
+  let html = '';
+  SECTIONS.forEach(sec => {
+    let total = 0, green = 0;
+    sec.topics.forEach((t, i) => {
+      total++;
+      if (ragState[`${sec.id}-${i}`] === 'g') green++;
+    });
+    const pct = total ? Math.round(green / total * 100) : 0;
+    html += `
+      <div class="ov-card" onclick="showSection('${sec.id}')">
+        <div class="ov-icon">${sec.icon}</div>
+        <div class="ov-title">${sec.title}</div>
+        <div class="ov-bar"><div class="ov-bar-fill" style="width:${pct}%;background:${sec.color}"></div></div>
+        <div class="ov-pct">${green}/${total} green</div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
+}
+
+function updateProgress() {
+  let allTopics = 0, greenTopics = 0;
+  SECTIONS.forEach(sec => {
+    sec.topics.forEach((t, i) => {
+      allTopics++;
+      if (ragState[`${sec.id}-${i}`] === 'g') greenTopics++;
+    });
+  });
+  const pct = allTopics ? greenTopics / allTopics * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function showSection(id) {
+  document.querySelectorAll('.section-wrap').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('sec-' + id);
+  if (el) el.classList.add('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  btns.forEach(b => { if (b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('active'); });
+  window.scrollTo(0,0);
+
+  if (id === 'flashcards') initFlashcards();
+}
+
+// ═══════════════════════════════════════════════
+// FLASHCARDS
+// ═══════════════════════════════════════════════
+function initFlashcards() {
+  fcDeck = [...allFlashcards];
+  fcIndex = 0; fcKnown = new Set();
+  buildFCFilter();
+  renderFC();
+}
+
+function buildFCFilter() {
+  const el = document.getElementById('fc-filter');
+  let html = `<button class="fc-filter-btn on" onclick="setFCFilter('all',this)">All topics</button>`;
+  SECTIONS.forEach(sec => {
+    html += `<button class="fc-filter-btn" onclick="setFCFilter('${sec.id}',this)">${sec.icon} ${sec.title.split(' ').slice(0,2).join(' ')}</button>`;
+  });
+  el.innerHTML = html;
+}
+
+function setFCFilter(filter, btn) {
+  fcFilter = filter;
+  document.querySelectorAll('.fc-filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  if (filter === 'all') {
+    fcDeck = [...allFlashcards];
+  } else {
+    const sec = SECTIONS.find(s => s.id === filter);
+    if (sec) {
+      fcDeck = allFlashcards.filter(f => f.topic === sec.title);
+    }
+  }
+  fcIndex = 0; fcKnown = new Set();
+  renderFC();
+}
+
+function renderFC() {
+  const card = document.getElementById('fc-card');
+  const q = document.getElementById('fc-q');
+  const a = document.getElementById('fc-a');
+  const t = document.getElementById('fc-topic');
+  const prog = document.getElementById('fc-progress');
+  const stats = document.getElementById('fc-stats');
+  if (!fcDeck.length) { q.textContent = 'No cards in this filter.'; return; }
+  card.classList.remove('flipped');
+  const item = fcDeck[fcIndex];
+  t.textContent = item.topic + ' › ' + item.sub;
+  q.textContent = item.q;
+  a.textContent = item.a;
+  prog.textContent = `${fcIndex+1} / ${fcDeck.length}`;
+  stats.textContent = `Known: ${fcKnown.size} | Remaining: ${fcDeck.length - fcKnown.size}`;
+}
+
+function flipCard() {
+  document.getElementById('fc-card').classList.toggle('flipped');
+}
+
+function markCard(known) {
+  if (known) fcKnown.add(fcIndex);
+  else fcKnown.delete(fcIndex);
+  nextCard();
+}
+
+function nextCard() {
+  fcIndex = (fcIndex + 1) % fcDeck.length;
+  renderFC();
+}
+function prevCard() {
+  fcIndex = (fcIndex - 1 + fcDeck.length) % fcDeck.length;
+  renderFC();
+}
+function shuffleCards() {
+  for (let i = fcDeck.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [fcDeck[i],fcDeck[j]] = [fcDeck[j],fcDeck[i]];
+  }
+  fcIndex = 0; fcKnown = new Set();
+  renderFC();
+}
+
+// Quiz auto-starts in offline mode for TES version
+
+// ═══════════════════════════════════════════════
+// OFFLINE QUIZ (static bank)
+// ═══════════════════════════════════════════════
+let offQuizQs = [];
+let offQuizIndex = 0;
+let offQuizScore = 0;
+let offQuizAnswered = false;
+
+function initOfflineQuiz() {
+  offQuizQs = [...allQuizQs].sort(() => Math.random() - 0.5).slice(0, 15);
+  offQuizIndex = 0; offQuizScore = 0; offQuizAnswered = false;
+  document.getElementById('gq-results-off').classList.remove('show');
+  document.getElementById('gq-card-off').style.display = 'block';
+  renderOfflineQ();
+}
+
+function renderOfflineQ() {
+  if (offQuizIndex >= offQuizQs.length) { showOfflineResults(); return; }
+  const q = offQuizQs[offQuizIndex];
+  document.getElementById('gq-topic-off').textContent = q.topic;
+  document.getElementById('gq-q-off').textContent = q.q;
+  document.getElementById('gq-score-off').textContent = `Score: ${offQuizScore} / ${offQuizIndex}`;
+  document.getElementById('gq-feedback-off').className = 'gq-feedback';
+  document.getElementById('gq-next-off').className = 'gq-next';
+  offQuizAnswered = false;
+  document.getElementById('gq-opts-off').innerHTML = q.opts.map((o, i) =>
+    `<button class="gq-opt" onclick="answerOfflineQ(this,${i},${q.ans})">${o}</button>`
+  ).join('');
+}
+
+function answerOfflineQ(btn, chosen, correct) {
+  if (offQuizAnswered) return;
+  offQuizAnswered = true;
+  const q = offQuizQs[offQuizIndex];
+  const opts = document.querySelectorAll('#gq-opts-off .gq-opt');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById('gq-feedback-off');
+  if (chosen === correct) {
+    offQuizScore++;
+    btn.classList.add('correct');
+    fb.className = 'gq-feedback show ok';
+    fb.textContent = '✓ Correct! ' + (q.exp || '');
+  } else {
+    btn.classList.add('wrong');
+    opts[correct].classList.add('correct');
+    fb.className = 'gq-feedback show no';
+    fb.textContent = '✗ ' + (q.exp || '');
+  }
+  document.getElementById('gq-score-off').textContent = `Score: ${offQuizScore} / ${offQuizIndex+1}`;
+  document.getElementById('gq-next-off').className = 'gq-next show';
+}
+
+function nextOfflineQ() {
+  offQuizIndex++;
+  renderOfflineQ();
+}
+
+function showOfflineResults() {
+  document.getElementById('gq-card-off').style.display = 'none';
+  const pct = Math.round(offQuizScore / offQuizQs.length * 100);
+  const msg = pct >= 80 ? '🌟 Excellent! Try the AI quiz for even more variety.' :
+              pct >= 60 ? '👍 Good — review the ones you missed.' :
+              pct >= 40 ? '📚 Keep revising — focus on your red topics.' :
+                          '💪 Go back and review, then try again.';
+  document.getElementById('gq-final-score-off').textContent = `${offQuizScore} / ${offQuizQs.length} (${pct}%)`;
+  document.getElementById('gq-final-msg-off').textContent = msg;
+  document.getElementById('gq-results-off').classList.add('show');
+  document.getElementById('gq-card-off').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+window.onload = () => {
+  renderSections();
+  updateProgress();
+};
+</script>
+</body>
+</html>
